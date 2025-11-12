@@ -53,7 +53,7 @@ export default function Hero() {
             I build <span className="text-cyan-400">interactive</span>, <span className="text-cyan-400">modern</span>, and <span className="text-cyan-400">responsive</span> web applications with React.js & Tailwind CSS
           </p>
           <a
-          href="/Shubham CV.pdf"
+          href="/ShubhamResume.pdf"
           download
           className="inline-block px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg shadow-lg hover:bg-cyan-600 hover:text-white transition-colors"
         >
