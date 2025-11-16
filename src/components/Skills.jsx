@@ -10,9 +10,11 @@ import {
 } from "react-icons/fa";
 import { SiTailwindcss } from "react-icons/si";
 import { SiExpo } from "react-icons/si";
+import { TbBrandNextjs } from "react-icons/tb";
 
 const skills = [
   { name: "React.js", level: 90, icon: <FaReact className="text-cyan-400" /> },
+  { name: "Next.js", level: 90, icon: <TbBrandNextjs className="text-cyan-400" /> },
   { name: "Expo", level: 80, icon: <SiExpo className="text-blue-500 dark:text-white" /> },
   { name: "Tailwind CSS", level: 85, icon: <SiTailwindcss className="text-sky-400" /> },
   { name: "JavaScript", level: 80, icon: <FaJs className="text-yellow-400" /> },

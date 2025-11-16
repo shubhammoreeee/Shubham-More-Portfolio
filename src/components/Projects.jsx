@@ -20,12 +20,12 @@ const projects = [
     tech: ["React", "Tailwind", "Framer Motion"],
     },
     {
-    title: "AyurSutra Care,Connect,Cure",
-    desc: "A web-based telehealth platform enabling rural healthcare access through real-time consultations.",
+    title: "StudentNeedy",
+    desc: "A full-stack AI-based student productivity platform for resumes, viva prep, assignments, notes, and portfolio building.",
     img: "/project3.png",
-    github: "https://github.com/shubhammoreeee",
-    live: "#",
-    tech: ["React", "Express", "MongoDB"],
+    github: "https://github.com/shubhammoreeee/StudentsNeedy",
+    live: "https://students-needy.vercel.app/",
+    tech: ["Next.js", "Tailwind CSS", "Supabase", "Groq AI", "Node.js"]
     },
 ];
 
