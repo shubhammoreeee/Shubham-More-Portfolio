@@ -1,4 +1,4 @@
-"""Build the hero images from public/bg-portrait.png.
+"""Build the hero images from source-assets/bg-portrait.png.
 
 Writes public/hero.jpg (the scene) and public/hero-cutout.webp (the same
 scene with only the person kept, so the big name can sit between the room
@@ -11,7 +11,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 from rembg import new_session, remove
 
-SRC = "public/bg-portrait.png"
+SRC = "source-assets/bg-portrait.png"
 # The image generator's sparkle watermark, bottom right.
 WATERMARK = (1229, 619, 1284, 676)
 
