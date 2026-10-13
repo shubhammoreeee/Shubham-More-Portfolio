@@ -1,37 +1,20 @@
-# Portfolio Starter (React + Tailwind)
+# Shubham More — Portfolio
 
-This starter includes:
-- Dark/Light toggle
-- Animated Hero (Framer Motion)
-- Downloadable resume (public/resume.pdf)
-- Skills section with progress bars
-- Contact form (Formspree placeholder)
-- Social links (GitHub & LinkedIn)
-- Sample Projects file (PROJECTS.md)
+Cinematic single-page portfolio built with React (Vite), GSAP ScrollTrigger and Lenis.
 
-## Your details (pre-filled)
-- Name: Shubham More
-- Email: shubhammore14112006@gmail.com
-- GitHub: https://github.com/shubhammoreeee
-- LinkedIn: https://www.linkedin.com/in/shubham-more-877493369
+## Run
+```bash
+npm install
+npm run dev      # local dev server
+npm run build    # production build in dist/
+```
 
-## Quick start
-1. Install:
-   ```bash
-   npm install
-   ```
-2. Run dev server:
-   ```bash
-   npm run dev
-   ```
-3. Build:
-   ```bash
-   npm run build
-   ```
+## Editing
+- All text, links and project data live in `src/content.js`.
+- Hero portrait: `public/SelfImage.jpg`. `public/portrait-cutout.png` is the same photo with the
+  backdrop removed (it lets the head sit in front of the big name). Regenerate it if you swap the photo.
+- Project screenshots and the resume PDF are in `public/`.
 
-## Replace / Customize
-- Replace `public/resume.pdf` with your real resume.
-- Update projects in `PROJECTS.md` or add a Projects.jsx component.
-- Replace the Formspree action URL in `src/components/Contact.jsx` with your form ID.
-
-Enjoy! — unzip and open in VS Code to start editing.
+## Structure
+`src/components/`: Preloader, Navbar, MenuOverlay, Cursor, Hero, About, Stack, Resume,
+ProjectsIntro, ProjectsRail, Contact, Footer. Styles are plain CSS in `src/index.css`.
