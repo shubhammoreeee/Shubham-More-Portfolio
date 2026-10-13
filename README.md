@@ -11,10 +11,11 @@ npm run build    # production build in dist/
 
 ## Editing
 - All text, links and project data live in `src/content.js`.
-- Hero portrait: `public/SelfImage.jpg`. `public/portrait-cutout.png` is the same photo with the
-  backdrop removed (it lets the head sit in front of the big name). Regenerate it if you swap the photo.
+- Hero: `public/hero.jpg` (the study scene) and `public/hero-cutout.webp` (the same scene with only
+  the person kept, so the big name sits between the room and you). Both are built from
+  `public/bg-portrait.png` by `python scripts/make-hero.py` (needs `pip install "rembg[cpu]"`).
 - Project screenshots and the resume PDF are in `public/`.
 
 ## Structure
-`src/components/`: Preloader, Navbar, MenuOverlay, Cursor, Hero, About, Stack, Resume,
+`src/components/`: Preloader, Navbar, MenuOverlay, Cursor, Hero, About, Ledger,
 ProjectsIntro, ProjectsRail, Contact, Footer. Styles are plain CSS in `src/index.css`.

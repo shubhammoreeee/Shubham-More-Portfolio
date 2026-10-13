@@ -1,42 +1,36 @@
 import { useLayoutEffect, useRef } from "react";
-import { gsap, fitText, reducedMotion } from "../lib/scroll";
+import { gsap } from "../lib/scroll";
 import { site } from "../content";
 
-export default function Footer() {
+export default function Footer({ reduce }) {
   const ref = useRef(null);
-  const measure = useRef(null);
 
+  // Letters rise out of their masks, scrubbed to the footer coming into view.
   useLayoutEffect(() => {
-    const fit = () => fitText(ref.current, measure.current, "--footer-fs");
-    fit();
-    document.fonts?.ready.then(fit);
-    window.addEventListener("resize", fit);
+    if (reduce) return;
     const ctx = gsap.context(() => {
-      gsap.from(".footer__char", {
+      gsap.from(".fw-char", {
         yPercent: 105,
-        duration: reducedMotion() ? 0.01 : 1.1,
-        ease: "power4.out",
-        stagger: 0.05,
-        scrollTrigger: { trigger: ref.current, start: "top 75%" },
+        stagger: 0.04,
+        ease: "none",
+        scrollTrigger: { trigger: ref.current, start: "top 85%", end: "bottom bottom", scrub: true },
       });
     }, ref);
-    return () => {
-      window.removeEventListener("resize", fit);
-      ctx.revert();
-    };
-  }, []);
+    return () => ctx.revert();
+  }, [reduce]);
 
   return (
     <footer className="footer" ref={ref}>
-      <p className="footer__credit">{site.credit}</p>
-      <div className="footer__name-wrap">
-        <p className="footer__name" ref={measure} aria-label={site.name}>
-          {site.name.split("").map((c, i) => (
-            <span className="footer__char" key={i} aria-hidden="true">
-              {c === " " ? " " : c}
+      <p className="footer-note">© 2026 {site.name}. Built with Love and Passion.</p>
+      <div className="fw" aria-label={site.name}>
+        {site.name
+          .toUpperCase()
+          .split("")
+          .map((c, i) => (
+            <span className="fw-mask" aria-hidden="true" key={i}>
+              <span className="fw-char">{c === " " ? " " : c}</span>
             </span>
           ))}
-        </p>
       </div>
     </footer>
   );

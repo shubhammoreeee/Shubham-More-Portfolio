@@ -1,86 +1,107 @@
 import { useLayoutEffect, useRef } from "react";
-import { gsap } from "../lib/scroll";
-import { projects } from "../content";
+import { gsap, ScrollTrigger } from "../lib/scroll";
+import { projects, site } from "../content";
 
-function Card({ p }) {
+const longestWord = (s) => Math.max(...s.split(/\s+/).map((w) => w.length));
+
+function Case({ p }) {
+  const repos = `${site.github}?tab=repositories`;
+  const href = p.live || p.repo || repos;
   return (
-    <article className="card" data-cursor-grow>
-      <div className="card__text">
-        <h3 className="card__title">{p.title}</h3>
-        <p className="card__subtitle">{p.subtitle}</p>
-        {p.meta && <p className="card__meta">{p.meta}</p>}
-        <ul className="card__bullets">
-          {p.bullets.map((b) => (
-            <li key={b}>{b}</li>
+    <article className="case" style={{ "--ar": p.ratio }}>
+      <div className="case-main">
+        <header>
+          <h3 className={longestWord(p.title) > 9 ? "is-long" : undefined}>{p.title}</h3>
+          <p className="case-kind">{p.kind}</p>
+          {(p.when || p.role) && <p className="case-meta">{[p.when, p.role].filter(Boolean).join(", ")}</p>}
+        </header>
+        <ul>
+          {p.points.map((pt) => (
+            <li key={pt}>{pt}</li>
           ))}
         </ul>
       </div>
-      <figure className="card__media">
-        <div className="card__frame">
-          <img src={p.image} alt={`${p.title} screenshot`} loading="lazy" />
+      <div className="case-side">
+        <a className="case-shot" href={href} target="_blank" rel="noreferrer" aria-label={`Open ${p.title}`}>
+          {p.image ? (
+            <img src={p.image} alt={`${p.title} screenshot`} loading="lazy" draggable="false" />
+          ) : (
+            <span className="case-blank" aria-hidden="true">
+              {p.title}
+            </span>
+          )}
+        </a>
+        <div>
+          <p className="case-stack">Built with {p.stack}.</p>
+          <div className="case-links">
+            {p.live && (
+              <a href={p.live} target="_blank" rel="noreferrer">
+                Open live site
+              </a>
+            )}
+            {p.download && (
+              <a href={p.download.href} download>
+                {p.download.label}
+              </a>
+            )}
+            {p.repo && (
+              <a href={p.repo} target="_blank" rel="noreferrer">
+                View code on GitHub
+              </a>
+            )}
+            {!p.live && !p.repo && !p.download && (
+              <a href={repos} target="_blank" rel="noreferrer">
+                See repositories on GitHub
+              </a>
+            )}
+          </div>
         </div>
-        <figcaption className="card__caption">Built with {p.stack}</figcaption>
-        <div className="card__links">
-          {p.links.map((l) => (
-            <a
-              key={l.label}
-              className="u-line"
-              href={l.href}
-              {...(l.download
-                ? { download: true }
-                : { target: "_blank", rel: "noopener noreferrer" })}
-            >
-              {l.label}
-            </a>
-          ))}
-        </div>
-      </figure>
+      </div>
     </article>
   );
 }
 
-export default function ProjectsRail() {
+// Vertical scroll drives a horizontal slide. The section is as tall as the
+// track is wide, and its inner frame is sticky.
+export default function ProjectsRail({ reduce }) {
   const ref = useRef(null);
+  const track = useRef(null);
 
   useLayoutEffect(() => {
-    const root = ref.current;
-    const track = root.querySelector(".rail__track");
-    const mm = gsap.matchMedia();
-    mm.add("(min-width: 900px)", () => {
-      const distance = () => Math.max(0, track.scrollWidth - root.clientWidth);
-      gsap.to(track, {
+    if (reduce) return;
+    const distance = () => Math.max(0, track.current.scrollWidth - window.innerWidth);
+    const size = () => {
+      ref.current.style.height = `${distance() + window.innerHeight}px`;
+    };
+    size();
+    ScrollTrigger.addEventListener("refreshInit", size);
+    const ctx = gsap.context(() => {
+      gsap.to(track.current, {
         x: () => -distance(),
         ease: "none",
         scrollTrigger: {
-          trigger: root,
+          trigger: ref.current,
           start: "top top",
-          end: () => `+=${distance()}`,
-          pin: true,
-          scrub: 0.8,
+          end: "bottom bottom",
+          scrub: true,
           invalidateOnRefresh: true,
         },
       });
-    });
-    mm.add("(max-width: 899px)", () => {
-      gsap.utils.toArray(".card", root).forEach((card) => {
-        gsap.from(card, {
-          y: 60,
-          autoAlpha: 0,
-          duration: 1,
-          ease: "power4.out",
-          scrollTrigger: { trigger: card, start: "top 85%" },
-        });
-      });
-    });
-    return () => mm.revert();
-  }, []);
+    }, ref);
+    return () => {
+      ScrollTrigger.removeEventListener("refreshInit", size);
+      ctx.revert();
+    };
+  }, [reduce]);
 
   return (
-    <section className="rail section-light" ref={ref} data-cursor="dark">
-      <div className="rail__track">
-        {projects.map((p) => (
-          <Card p={p} key={p.title} />
-        ))}
+    <section className={`work${reduce ? " work-static" : ""}`} id="work" ref={ref}>
+      <div className="work-sticky">
+        <div className="work-track" ref={track}>
+          {projects.map((p) => (
+            <Case p={p} key={p.title} />
+          ))}
+        </div>
       </div>
     </section>
   );
